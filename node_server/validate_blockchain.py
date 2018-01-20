@@ -20,5 +20,10 @@ def main():
     chain = read_from_pickle("resources/chain.pkl")
     state = checkChain(chain)
 
+    if not state: 
+        print("The chain is not valid")
+    else: 
+        print("The chain file is valid for use!")
+
 if __name__ == '__main__':
     main()

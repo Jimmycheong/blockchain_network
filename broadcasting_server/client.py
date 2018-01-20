@@ -1,6 +1,13 @@
 '''client.py
 
 https://anaconda.org/pypi/websocket-client
+
+CURRENT STATUS: WORK IN PROGRESS:
+
+TODO: 
+- Open up a socket connection to allow clients to connect to 
+- Send the latest blockchain information to connected clients.
+
 '''
 
 from websocket import create_connection

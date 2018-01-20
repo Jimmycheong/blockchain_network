@@ -19,3 +19,8 @@ Once a node has recorded sufficient number of transactions, the transactions can
 to the broadcasting server to create a new block to be appended onto the global blockchain
 
 `python submit_block.py`
+
+
+To check whether the blockchain found in the resources folder is valid, run:
+
+`python validate_blockchain.py`

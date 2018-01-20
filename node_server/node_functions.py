@@ -7,6 +7,14 @@ import os
 
 from functions import make_block
 
+def clear_existing_transactions_file(file_path='resources/existingTransactions.json'):
+
+    existing_transactions = []
+
+    with open(file_path, 'w+', encoding="utf8") as file:
+        json.dump(existing_transactions, file)
+
+
 def update_existing_transactions_file(existing_transactions, file_path='resources/existingTransactions.json'):
 
     '''

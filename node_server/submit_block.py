@@ -22,8 +22,10 @@ from functions import (
     make_block
 )
 from validity_functions import checkChain
-from node_functions import submit_new_block_to_blockchain
-
+from node_functions import (
+    submit_new_block_to_blockchain,
+    clear_existing_transactions_file
+)
 def main():
 
     file_path = "resources/existingTransactions.json"
@@ -54,6 +56,8 @@ def main():
         existing_transactions, 
         chain
     )
+
+    clear_existing_transactions_file()
 
     print("Successfully submitted block..")
 
