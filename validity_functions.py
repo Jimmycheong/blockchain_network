@@ -1,5 +1,6 @@
 from functions import (
-    hash_function
+    hash_function,
+    update_state
 )
 
 def check_block_hash(block):
@@ -30,7 +31,7 @@ def check_block_validity(block,parent,state):
     # Check transaction validity; throw an error if an invalid transaction was found.
     for txn in block['contents']['tokens']:
         if isValidTxn(txn,state):
-            state = updateState(txn,state)
+            state = update_state(txn,state)
         else:
             raise Exception('Invalid transaction in block %s: %s'%(block_number,txn))
 
@@ -73,7 +74,7 @@ def checkChain(chain):
     # - Block hash is valid for the block contents
 
     for txn in chain[0]['contents']['tokens']:
-        state = updateState(txn,state)
+        state = update_state(txn,state)
     check_block_hash(chain[0])
     parent = chain[0]
     

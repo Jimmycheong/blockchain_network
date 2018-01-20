@@ -11,14 +11,13 @@ from functions import (
 
 def main():
 
-    print("Creating genesis block..")
     gb = create_genesis_block()
 
-    print("Creating the new chain...")
     chain = [gb] # Create the blockchain
 
-    print("Saving new chain as pickle file....")
     save_to_pickle("resources/chain.pkl", chain)
+
+    print("New Blockchain created..")
 
 
 if __name__ == '__main__':
