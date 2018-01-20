@@ -7,3 +7,12 @@ The following module is designed to listen out for new transactions and broadcas
 - Set up sockets for Flask
 - Setup channels to listen and broadcast messages
 
+# How to run broadcasting server 
+
+Run the following command to start up a gunicorn worker: 
+
+`gunicorn -k flask_sockets.worker main:app`
+
+In another window, start the server by typing:
+
+`python main.py`

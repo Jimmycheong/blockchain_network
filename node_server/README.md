@@ -8,3 +8,7 @@ Responsibilities of a node server:
 - Create new blocks (from new transactions) to append to the existing blockchain.
 - Send the information to the broadcast server to be announced across the network.
 - Receive the most updated blockchain to be mined.
+
+Run the server with the addition of a specified port: 
+
+`flask run --port 7000`
