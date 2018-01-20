@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.port = 7000
 
 @app.route("/api/balance/<account_holder>",  methods=['GET'])
-def validate_transaction(account_holder):
+def check_balance(account_holder):
 
     chain = read_from_pickle("resources/chain.pkl")
     state = checkChain(chain)
@@ -52,17 +52,17 @@ def add_new_transactions():
     # which in turn will collect transactions, create blocks and 
     # broadcast new blockchain to all nodes in network.
 
-    res = requests.post(
-        'http://localhost:5000/api/blockchain/append', 
-        json=new_block
-    )
+    # res = requests.post(
+    #     'http://localhost:5000/api/blockchain/append', 
+    #     json=new_block
+    # )
 
-    print("Response msg: ", res.text)
+    # print("Response msg: ", res.text)
 
-    if res.status_code != 200: 
-        abort(400, "Transaction unsuccessful")
+    # if res.status_code != 200: 
+    #     abort(400, "Transaction unsuccessful")
 
-    print("Response: \n")
-    print(res.text)
+    # print("Response: \n")
+    # print(res.text)
 
     return "Transaction successfully added"
