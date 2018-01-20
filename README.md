@@ -1,4 +1,4 @@
-# blockchain_demo
+# Blockchain Network
 A mini-project aimed at building a blockchain network. 
 
 ## Modules
