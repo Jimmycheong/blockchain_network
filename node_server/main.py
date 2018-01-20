@@ -9,11 +9,17 @@ blockchain and sent to the broadcast server.
 import sys
 sys.path.append("..")
 
-from flask import Flask, request
+from flask import Flask, request, abort
+import json
+from pprint import pprint 
+import requests
+
+# Imports from package above
 from functions import is_valid_token, read_from_pickle, make_block
 from validity_functions import checkChain
 
 app = Flask(__name__)
+app.port = 7000
 
 @app.route("/api/balance/<account_holder>",  methods=['GET'])
 def validate_transaction(account_holder):
@@ -40,9 +46,23 @@ def add_new_transactions():
 
     new_block = make_block([token], chain)
 
-    chain.append(new_block)
+    # TEMP save blockchains locally?
 
-    print("New block:\n", chain)
+    # TODO: Send transactions over to the broadcasting server
+    # which in turn will collect transactions, create blocks and 
+    # broadcast new blockchain to all nodes in network.
 
-    return "Transaction valid? : {}".format(result)
+    res = requests.post(
+        'http://localhost:5000/api/blockchain/append', 
+        json=new_block
+    )
 
+    print("Response msg: ", res.text)
+
+    if res.status_code != 200: 
+        abort(400, "Transaction unsuccessful")
+
+    print("Response: \n")
+    print(res.text)
+
+    return "Transaction successfully added"
