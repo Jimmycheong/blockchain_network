@@ -6,6 +6,9 @@ __pycache__/
 # Pickle
 *.pkl
 
+#Project files
+*existingTransactions.json
+
 *.DS_Store
 
 

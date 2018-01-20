@@ -18,6 +18,12 @@ import requests
 from functions import is_valid_token, read_from_pickle, make_block
 from validity_functions import checkChain
 
+from .node_functions import (
+    update_existing_transactions_file, 
+    get_existing_transactions
+)
+
+
 app = Flask(__name__)
 app.port = 7000
 
@@ -35,34 +41,16 @@ def check_balance(account_holder):
 @app.route("/api/transaction/new",  methods=['POST'])
 def add_new_transactions():
 
-    print(request.get_json())
     token = request.get_json()
-
     chain = read_from_pickle("resources/chain.pkl")
-
     state = checkChain(chain)
 
-    result = is_valid_token(token, state)
+    if not is_valid_token(token, state):
+        abort(400, "Transaction is not valid")
 
-    new_block = make_block([token], chain)
+    existing_transactions = get_existing_transactions()
+    existing_transactions.append(token)
 
-    # TEMP save blockchains locally?
-
-    # TODO: Send transactions over to the broadcasting server
-    # which in turn will collect transactions, create blocks and 
-    # broadcast new blockchain to all nodes in network.
-
-    # res = requests.post(
-    #     'http://localhost:5000/api/blockchain/append', 
-    #     json=new_block
-    # )
-
-    # print("Response msg: ", res.text)
-
-    # if res.status_code != 200: 
-    #     abort(400, "Transaction unsuccessful")
-
-    # print("Response: \n")
-    # print(res.text)
+    update_existing_transactions_file(existing_transactions)
 
     return "Transaction successfully added"
