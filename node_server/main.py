@@ -1,42 +1,48 @@
-import time
-from flask import (
-    Flask,
-    request,
-    url_for,
-    redirect,
-    make_response,
-    render_template,
-    jsonify
-)
-from tasks import my_background_task
-from celery import Celery
+'''main.py
+
+The purpose of this file is to run a node server with endpoint functionality. 
+It allows for new users to create transactions which can then be appended onto the 
+blockchain and sent to the broadcast server.
+
+'''
+
+import sys
+sys.path.append("..")
+
+from flask import Flask, request
+from functions import is_valid_token, read_from_pickle, make_block
+from validity_functions import checkChain
 
 app = Flask(__name__)
 
-@app.route("/",  methods=['GET'])
-def index():
-    resp = make_response(render_template('index.html'), 200)
-    return resp
+@app.route("/api/balance/<account_holder>",  methods=['GET'])
+def validate_transaction(account_holder):
 
-@app.errorhandler(404)
-def not_found(error):
-    return render_template('error.html'), 404
+    chain = read_from_pickle("resources/chain.pkl")
+    state = checkChain(chain)
 
-@app.route("/task",  methods=['POST'])
-def add_task():
-    task = my_background_task.delay("Puppies")
-    print("Added: %s to the queue" % task.id)
-    return task.id
+    if account_holder in state.keys():
+        return "{} has {} in their account".format(account_holder, state[account_holder])
+    else: 
+        return "{} does not exist and therefore does not have any money on their account".format(account_holder)
 
-@app.route("/status/<task_id>", methods=['GET'])
-def task_status(task_id):
-    task = my_background_task.AsyncResult(task_id)
-    if task.state == "PENDING":
-        response = "PENDING"
-    elif task.state == "FAILURE":
-        response = "FAILURE"
-    elif task.state == "SUCCESS":
-        response = "SUCCESS"
-    else:
-        response = "Something went wrong..."
-    return jsonify(response)
+@app.route("/api/transaction/new",  methods=['POST'])
+def add_new_transactions():
+
+    print(request.get_json())
+    token = request.get_json()
+
+    chain = read_from_pickle("resources/chain.pkl")
+
+    state = checkChain(chain)
+
+    result = is_valid_token(token, state)
+
+    new_block = make_block([token], chain)
+
+    chain.append(new_block)
+
+    print("New block:\n", chain)
+
+    return "Transaction valid? : {}".format(result)
+

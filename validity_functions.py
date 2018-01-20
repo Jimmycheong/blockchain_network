@@ -1,6 +1,7 @@
 from functions import (
     hash_function,
-    update_state
+    update_state,
+    is_valid_token
 )
 
 def check_block_hash(block):
@@ -30,7 +31,7 @@ def check_block_validity(block,parent,state):
     
     # Check transaction validity; throw an error if an invalid transaction was found.
     for txn in block['contents']['tokens']:
-        if isValidTxn(txn,state):
+        if is_valid_token(txn,state):
             state = update_state(txn,state)
         else:
             raise Exception('Invalid transaction in block %s: %s'%(block_number,txn))

@@ -29,16 +29,16 @@ def update_state(tokens, state):
             state[key] = tokens[key]
     return state
 
-def make_block(tokens, parent_block):
+def make_block(tokens, chain):
 
     '''
     Inputs: 
         token(list)): A list of transaction objects (dictionary objects)
-        parent_block(dict): The last block on the chain
+        chain (list): The blockchain containing the blocks (dicts)
 
     Returns: A dictionary representing the hash to be appended to the chain
     '''
-    # parent_block = chain[-1]
+    parent_block = chain[-1]
 
     block_header = {
         u'blockNumber':parent_block[u'contents'][u'blockNumber'] + 1,
@@ -49,7 +49,7 @@ def make_block(tokens, parent_block):
 
     block_hash = hash_function(block_header)
     
-    return {u'hash':block_hash,u'contents':blockContents}
+    return {u'hash':block_hash,u'contents':block_header}
 
 def save_to_pickle(directory, data):
     '''Saves a python object as a pickle file'''
@@ -115,11 +115,11 @@ def make_transaction(maxValue=3):
     # This will create valid transactions in the range of (1,maxValue)
     sign      = int(random.getrandbits(1))*2 - 1   # This will randomly choose -1 or 1
     amount    = random.randint(1,maxValue)
-    alice_pays = sign * amount
-    bob_pays   = -1 * alice_pays
+    jimmy_pays = sign * amount
+    alice_pays   = -1 * jimmy_pays
     # By construction, this will always return transactions that respect the conservation of tokens.
     # However, note that we have not done anything to check whether these overdraft an account
-    return {u'Alice':alice_pays,u'Bob':bob_pays}
+    return {u'Jimmy':jimmy_pays,u'Alice':alice_pays}
 
 
 def is_valid_token(token,state):
