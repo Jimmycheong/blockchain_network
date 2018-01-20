@@ -1,7 +1,73 @@
-import hashlib, json, sys
+'''Function.py
+
+A collection of functions used in this project
+
+'''
+
+import hashlib
+import json
+import pickle
 import random
+import sys
+
 random.seed(0)
 
+def update_state(tokens, state):
+
+    # --------------------TODO--------------------
+
+    # Inputs: tokens, state: dictionaries keyed with account names, holding numeric values for transfer amount (tokens) or account balance (state)
+    # Returns: Updated state, with additional users added to state if necessary
+    # NOTE: This does not not validate the transaction- just updates the state!
+    
+    # If the transaction is valid, then update the state
+    state = state.copy() # As dictionaries are mutable, let's avoid any confusion by creating a working copy of the data.
+    for key in tokens:
+        if key in state.keys():
+            state[key] += tokens[key]
+        else:
+            state[key] = tokens[key]
+    return state
+
+def make_block(tokens, parent_block):
+
+    '''
+    Inputs: 
+        token(list)): A list of transaction objects (dictionary objects)
+        parent_block(dict): The last block on the chain
+
+    Returns: A dictionary representing the hash to be appended to the chain
+    '''
+    # parent_block = chain[-1]
+
+    block_header = {
+        u'blockNumber':parent_block[u'contents'][u'blockNumber'] + 1,
+        u'parentHash':parent_block[u'hash'],
+        u'tokenCount':len(tokens),
+        u'tokens':tokens
+    }
+
+    block_hash = hash_function(block_header)
+    
+    return {u'hash':block_hash,u'contents':blockContents}
+
+def save_to_pickle(directory, data):
+    '''Saves a python object as a pickle file'''
+
+    with open(directory, 'wb') as file:
+        pickle.dump(data, file)
+
+def read_from_pickle(directory): 
+    '''
+    Reads a pickle file 
+
+    Returns: 
+        loaded_obj(any): returns the object loaded from the pickle file.
+    '''
+    with open(directory, 'rb') as file:
+        loaded_obj = pickle.load(file)
+
+    return loaded_obj
 
 def create_genesis_block():
     '''
@@ -13,7 +79,7 @@ def create_genesis_block():
 
     state = {u"Jimmy": 100000, u"Alice":50}  # Initial state
     genesis_block_tokens = [state]
-    genesis_block_contents = {u'blockNumber':0,u'parentHash':None,u'txnCount':1,u'txns':genesis_block_tokens}
+    genesis_block_contents = {u'blockNumber':0,u'parentHash':None,u'tokenCount':1,u'tokens':genesis_block_tokens}
     genesis_hash = hash_function(genesis_block_contents)
     genesis_block = {u'hash':genesis_hash,u'contents':genesis_block_contents}
 
@@ -41,14 +107,19 @@ def hash_function(header=""):
 
 
 def make_transaction(maxValue=3):
+    '''
+    --------------------TODO--------------------
+
+    Used to generate random transactions
+    '''
     # This will create valid transactions in the range of (1,maxValue)
     sign      = int(random.getrandbits(1))*2 - 1   # This will randomly choose -1 or 1
     amount    = random.randint(1,maxValue)
-    alicePays = sign * amount
-    bobPays   = -1 * alicePays
+    alice_pays = sign * amount
+    bob_pays   = -1 * alice_pays
     # By construction, this will always return transactions that respect the conservation of tokens.
     # However, note that we have not done anything to check whether these overdraft an account
-    return {u'Alice':alicePays,u'Bob':bobPays}
+    return {u'Alice':alice_pays,u'Bob':bob_pays}
 
 
 def is_valid_token(token,state):
