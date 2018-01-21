@@ -20,6 +20,10 @@ Install all dependancies on each module using the pip command line tool:
 
 `pip install -r requirements.txt`
 
-To generate a genesis block: 
+To create the genesis block: 
 
-`python blockchain_generator.py`
+`python create_genesis.py`
+
+To check whether the latest block is valid: 
+
+`python check_block.py`
