@@ -77,4 +77,4 @@ def submit_new_block_to_blockchain(remote_host, tokens, chain):
     print("Response msg: ", res.text)
 
     if res.status_code != 200: 
-        raise Error("Bad request!")
+        raise Exception("Bad request!")

@@ -44,13 +44,11 @@ def get_newest_version_of_blockchain():
 
 @app.route("/api/blockchain/append", methods=['POST'])
 def verify_and_append_new_block():
-    print("Reached!")
     try: 
         data = request.get_json()
     except:
         abort(400, "Submitted data is not JSON format")
 
-    print("Reached 2!")
     if (type(data)) != dict:
         abort(400, "Data is not in list format")
 
@@ -60,16 +58,13 @@ def verify_and_append_new_block():
     parent_block = chain[-1]
 
     if not check_block_validity(data, parent_block, state): 
-        print("Print 3!")
         abort(400, "Block is not valid")
 
     print("Reached 3!")
     chain.append(data)
 
     # TODO: SAVE BLOCK and Broadcast
-    # save_to_pickle("resources/chain.pkl", chain)
-
-    
+    # save_to_pickle("resources/chain.pkl", chain)    
 
     return json.dumps(chain)
 
