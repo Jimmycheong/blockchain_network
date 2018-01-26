@@ -15,6 +15,7 @@ gunicorn -k flask_sockets.worker main:app
 import sys
 sys.path.append("..")
 
+from constants import *
 
 from flask import (
     Flask,

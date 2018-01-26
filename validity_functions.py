@@ -4,6 +4,8 @@ from functions import (
     is_valid_token
 )
 
+from constants import MINIMUM_NUMBER_OF_TRANSACTIONS
+
 def check_block_hash(block):
 
     # --------------------TODO--------------------
@@ -28,6 +30,10 @@ def check_block_validity(block,parent,state):
     parent_number = parent['contents']['blockNumber']
     parent_hash   = parent['hash']
     block_number  = block['contents']['blockNumber']
+
+
+    if len(block['contents']['tokens']) < MINIMUM_NUMBER_OF_TRANSACTIONS:
+        raise Exception("Not enough transations to make a block. Minimum number: 4")
     
     # Check transaction validity; throw an error if an invalid transaction was found.
     for txn in block['contents']['tokens']:

@@ -21,13 +21,18 @@ from functions import (
     read_from_pickle,
     make_block
 )
+
+from constants import MINIMUM_NUMBER_OF_TRANSACTIONS
+
 from validity_functions import checkChain
 from node_functions import (
     submit_new_block_to_blockchain,
     clear_existing_transactions_file
 )
-def main():
 
+
+def main():
+    
     file_path = "resources/existingTransactions.json"
 
     if not os.path.exists(file_path):
@@ -39,16 +44,17 @@ def main():
     if type(existing_transactions) != list:
         raise TypeError("expected list, not type{}".format(type(existing_transactions)))
 
-
     # Validation Check 
     chain = read_from_pickle("resources/chain.pkl")
     state = checkChain(chain)
 
+    # # Ensure there are a minimum number of transactions to create a block
+    # if len(existing_transactions) < MINIMUM_NUMBER_OF_TRANSACTIONS:
+    #     raise Exception("Not enough transactions to make a new block. Minimum number: {}".format(MINIMUM_NUMBER_OF_TRANSACTIONS))
+
     for et in existing_transactions:
         if not is_valid_token(et, state):
             raise Exception("Token invalid : {}")
-
-    print("All tokens valid.")
 
     # Submit block for appending to global chain
     submit_new_block_to_blockchain(
