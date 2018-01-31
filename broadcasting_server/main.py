@@ -27,8 +27,8 @@ import json
 
 
 # Functions from package above
-from validity_functions import check_block_validity
-from functions import (
+from functions.validity_functions import check_block_validity
+from functions.general_functions import (
     read_from_pickle,
     save_to_pickle
 )

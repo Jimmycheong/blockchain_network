@@ -4,7 +4,7 @@ The following file is used to generate a new blockchain and stores it locally as
 
 ''' 
 
-from functions import create_genesis_block, save_to_pickle
+from functions.general_functions import create_genesis_block, save_to_pickle
 
 def main():
 

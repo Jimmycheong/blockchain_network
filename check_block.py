@@ -3,8 +3,8 @@
 The following file checks to see if a blockchain is valid
 '''
 
-from validity_functions import checkChain
-from functions import (read_from_pickle, save_to_pickle)
+from functions.validity_functions import checkChain
+from functions.general_functions import (read_from_pickle, save_to_pickle)
 from pprint import pprint
 
 def main():
