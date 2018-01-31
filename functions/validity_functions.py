@@ -1,4 +1,4 @@
-from functions import (
+from .general_functions import (
     hash_function,
     update_state,
     is_valid_token

@@ -1,7 +1,7 @@
 import sys
 sys.path.append("..")
 
-from functions import (
+from functions.general_functions import (
     read_from_pickle,
     save_to_pickle
 )

@@ -8,6 +8,7 @@ __pycache__/
 
 #Project files
 *existingTransactions.json
+*.key
 
 *.DS_Store
 
