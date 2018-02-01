@@ -3,11 +3,11 @@ A mini-project aimed at building a blockchain network.
 
 ## Modules
 
-### [broadcasting_server](/broadcasting_server):
+### [broadcasting_server](/broadcasting_server)
 - Listens for new blocks
 - Broadcasts new chains to all connected clients
 
-### [node_server](/node_server): 
+### [node_server](/node_server)
 - Listens for new transactions 
 - Listens for the latest version of the blockchain
 - Creates new blocks from new transactions

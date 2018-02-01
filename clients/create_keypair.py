@@ -1,3 +1,9 @@
+'''create_keypair.py
+
+This file contains logic on allowing a new user to generate a wallet
+
+'''
+
 import sys
 sys.path.append("..")
 
@@ -10,7 +16,6 @@ from functions.encryption_functions import (
 def main():
     
     sign_key, verify_key = generate_ecdsa_keypair()
-
     sign_key_byte = sign_key.to_string()
     verify_key_byte = verify_key.to_string()
 
@@ -31,7 +36,7 @@ def main():
         file.write(public_address)
 
     with open("keys/private.key", "w") as file:
-        file.write(verify_key_byte.hex())
+        file.write(sign_key_byte.hex())
 
 if __name__ == '__main__':
     main()

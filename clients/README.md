@@ -12,3 +12,10 @@ To create a new keypair, run the script:
 
 `python create_keypair.py`
 
+
+To send coins to another address, ensure: 
+- A private key file exists in the 'keys' folder
+- The address to send coins to is valid.
+
+Then run the following script: 
+`python send_coins.py`
