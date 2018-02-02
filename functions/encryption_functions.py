@@ -24,10 +24,10 @@ def generate_public_address(public_key):
 
     '''
 
-    if len(public_key) != 64: 
-        raise Exception("Please enter a")
+    if type(public_key) != bytes: 
+        raise TypeError("Please insert bytes")
 
-    hash_1 = SHA256.new(public_key).hexdigest() # Stage 1 
+    hash_1 = SHA256.new(public_key).digest() # Stage 1 
     r160_hash_obj = RIPEMD160Hash() # Stage 2
     r160_hash_obj.update(hash_1)    
     hash_2 = r160_hash_obj.hexdigest()
@@ -51,7 +51,7 @@ def generate_checksum(hash_1):
     return hash_3[:4].hex() # Checksum
 
 
-def is_valid_public_address(public_address): 
+def is_valid_public_address(pub_addr): 
     '''Checks to see if an address is a valid address
 
     public_address (str): A base58 string to be decoded 

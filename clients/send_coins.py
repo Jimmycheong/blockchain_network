@@ -14,8 +14,10 @@ from functions.encryption_functions import (
     generate_public_address,
     is_valid_public_address
 )
+import base58
 
-RECEIVER_ADDR = '1BWe4MvDUeq7yjsP5PcR64c85xAPm2spEa'
+SOME_ADDR = '13izeSfNfjFq544Ldkwe7bnUBaxMPeQKUK'
+RECEIVER_ADDR = '1BkvDiMc9SgoDK7BY1Vpg9ee2rYb3uy7tn'
 amount = 50
 
 def create_new_transaction(sender_addr, receiver_addr, amount):
@@ -55,7 +57,15 @@ def main():
     vk = sk.get_verifying_key()
     SENDER_ADDR = generate_public_address(vk.to_string())
 
-    print("Sender address: {}".format(SENDER_ADDR))
+    print("\nSender address: {}".format(SENDER_ADDR))
+
+    user_input = input("Enter an address to send coins to: ")
+
+    if len(user_input) == 0: 
+        print("\nNo address entered. Exited...")
+        sys.exit(0)
+
+    user_input = RECEIVER_ADDR
 
     if not is_valid_public_address(RECEIVER_ADDR): 
         raise Exception("Receiver address does not have a valid address format.")
