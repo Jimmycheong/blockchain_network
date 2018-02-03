@@ -1,5 +1,6 @@
 # Blockchain Network
-A mini-project aimed at building a blockchain network. 
+
+A project to build a blockchain technology that uses transactions of virtual currency. Uses node servers to listen for new transactions and broadcasting servers to broadcast the latest block to all network nodes.
 
 ## Modules
 
