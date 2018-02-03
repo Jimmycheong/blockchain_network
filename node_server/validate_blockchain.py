@@ -7,9 +7,9 @@ found within the resources folder is valid.
 import os
 import sys
 sys.path.append("..")
-from validity_functions import checkChain
+from functions.validity_functions import checkChain
 
-from functions import read_from_pickle
+from functions.general_functions import read_from_pickle
 from pprint import pprint
 
 def main():

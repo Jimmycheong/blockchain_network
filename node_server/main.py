@@ -7,50 +7,68 @@ blockchain and sent to the broadcast server.
 '''
 
 import sys
-sys.path.append("..")
+sys.path.append("..") # Enables access to parent modules
 
 from flask import Flask, request, abort
 import json
 from pprint import pprint 
 import requests
 
-# Imports from package above
-from functions import is_valid_token, read_from_pickle, make_block
-from validity_functions import checkChain
+from functions.general_functions import is_valid_token, read_from_pickle, make_block
+from functions.validity_functions import checkChain
+from functions.encryption_functions import is_valid_public_address 
 
 from .node_functions import (
     update_existing_transactions_file, 
-    get_existing_transactions
+    get_existing_transactions,
+    update_state_with_existing_transactions
 )
 
+from .errors import abort_with_invalid_address
 
 app = Flask(__name__)
-app.port = 7000
+app.port = 7005
 
 @app.route("/api/balance/<account_holder>",  methods=['GET'])
 def check_balance(account_holder):
 
-    chain = read_from_pickle("resources/chain.pkl")
-    state = checkChain(chain)
+    if not is_valid_public_address(account_holder):
+        abort_with_invalid_address(account_holder)
 
-    if account_holder in state.keys():
-        return "{} has {} in their account".format(account_holder, state[account_holder])
+    chain = read_from_pickle("resources/chain.pkl")
+    state_of_chain = checkChain(chain)
+
+    existing_txns = get_existing_transactions()
+    latest_state = update_state_with_existing_transactions(state_of_chain, existing_txns)     
+
+    if account_holder in latest_state.keys():
+        return "{} has {} in their account".format(account_holder, latest_state[account_holder])
     else: 
         return "{} does not exist and therefore does not have any money on their account".format(account_holder)
+
 
 @app.route("/api/transaction/new",  methods=['POST'])
 def add_new_transactions():
 
-    token = request.get_json()
-    chain = read_from_pickle("resources/chain.pkl")
-    state = checkChain(chain)
+    txn = request.get_json()
 
-    if not is_valid_token(token, state):
+    print("Received transactions:", txn)
+
+    #Checks if all addresses are in correct format
+    for address in txn.keys():
+        if not is_valid_public_address(address):
+            abort_with_invalid_address(address)
+
+    chain = read_from_pickle("resources/chain.pkl")
+    state_of_chain = checkChain(chain)
+
+    existing_txns = get_existing_transactions()
+    latest_state = update_state_with_existing_transactions(state_of_chain, existing_txns) 
+
+    if not is_valid_token(txn, latest_state):
         abort(400, "Transaction is not valid")
 
-    existing_transactions = get_existing_transactions()
-    existing_transactions.append(token)
-
-    update_existing_transactions_file(existing_transactions)
+    existing_txns.append(txn)
+    update_existing_transactions_file(existing_txns)
 
     return "Transaction successfully added"

@@ -1,13 +1,43 @@
 import sys
 sys.path.append("..")
 
+import os
 import json 
 import requests
-import os
 
-from functions import make_block
+from functions.general_functions import make_block
+
+def update_state_with_existing_transactions(state, txns):
+    '''
+
+    Takes an existing state and updates it using a list of transactions gathered
+
+    Params: 
+        state(dict): A dictionary containing all addresses stored on the block and their respective coin quantity.
+        txn(list): A list of dictionary objects where each dict. represents
+                    a transaction.
+
+    Return: A dictionary containing the latest state.
+
+    '''
+
+    for txn in txns: 
+        for address in txn: 
+            if address not in state.keys():
+                state[address] = txn[address]
+            else:
+                state[address] += txn[address]
+
+    return state
 
 def clear_existing_transactions_file(file_path='resources/existingTransactions.json'):
+    '''
+    Cleans the existing transactions file by replace it with an array
+    
+    Params: 
+        file_path(str): The path of the file containing all existing transactions heard by the
+                        node server.
+    '''
 
     existing_transactions = []
 

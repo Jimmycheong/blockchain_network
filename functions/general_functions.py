@@ -69,15 +69,19 @@ def read_from_pickle(directory):
 
     return loaded_obj
 
-def create_genesis_block():
+def create_genesis_block(creator_addr, initial_amount):
     '''
     Creates initial block of chain sequence
+
+    Params:
+        creator_addr(str): base58 public address
+        initial_amount(int): Initial amount of tokens to create. Fixed amount.
 
     Returns: 
         genesis_block (dict): The initial block to be append to the chain
     '''
 
-    state = {u"Jimmy": 100000, u"Alice":50}  # Initial state
+    state = {u"{}".format(creator_addr): initial_amount}  # Initial state
     genesis_block_tokens = [state]
     genesis_block_contents = {u'blockNumber':0,u'parentHash':None,u'tokenCount':1,u'tokens':genesis_block_tokens}
     genesis_hash = hash_function(genesis_block_contents)
