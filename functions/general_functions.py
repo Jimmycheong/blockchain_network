@@ -8,9 +8,19 @@ import hashlib
 import json
 import pickle
 import random
+import re
 import sys
 
 random.seed(0)
+
+def is_valid_input_amount(input_str):
+
+    pattern = re.compile("[0-9.]+")
+
+    if pattern.fullmatch(input_str) is not None:
+        return True
+    else:
+        return False
 
 def update_state(tokens, state):
 
@@ -66,6 +76,17 @@ def read_from_pickle(directory):
     '''
     with open(directory, 'rb') as file:
         loaded_obj = pickle.load(file)
+
+    return loaded_obj
+
+def save_to_json(directory, data):
+
+    with open(directory, 'w') as file:
+        json.dump(data, file)    
+
+def read_from_json(directory): 
+    with open(directory, 'r') as file:
+        loaded_obj = json.load(file)
 
     return loaded_obj
 

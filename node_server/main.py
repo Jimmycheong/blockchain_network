@@ -14,7 +14,9 @@ import json
 from pprint import pprint 
 import requests
 
-from functions.general_functions import is_valid_token, read_from_pickle, make_block
+from constants import CHAIN_DIR
+
+from functions.general_functions import is_valid_token, make_block, read_from_json
 from functions.validity_functions import checkChain
 from functions.encryption_functions import is_valid_public_address 
 
@@ -35,7 +37,7 @@ def check_balance(account_holder):
     if not is_valid_public_address(account_holder):
         abort_with_invalid_address(account_holder)
 
-    chain = read_from_pickle("resources/chain.pkl")
+    chain = read_from_json("resources/{}".format(CHAIN_DIR))
     state_of_chain = checkChain(chain)
 
     existing_txns = get_existing_transactions()
@@ -59,7 +61,7 @@ def add_new_transactions():
         if not is_valid_public_address(address):
             abort_with_invalid_address(address)
 
-    chain = read_from_pickle("resources/chain.pkl")
+    chain = read_from_json("resources/{}".format(CHAIN_DIR))
     state_of_chain = checkChain(chain)
 
     existing_txns = get_existing_transactions()

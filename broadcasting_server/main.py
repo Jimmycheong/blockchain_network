@@ -15,7 +15,10 @@ gunicorn -k flask_sockets.worker main:app
 import sys
 sys.path.append("..")
 
-from constants import *
+from constants import (
+    CHAIN_DIR,
+    LATEST_STATE_DIR
+)
 
 from flask import (
     Flask,
@@ -29,8 +32,8 @@ import json
 # Functions from package above
 from functions.validity_functions import check_block_validity
 from functions.general_functions import (
-    read_from_pickle,
-    save_to_pickle
+    read_from_json,
+    save_to_json
 )
 
 app = Flask(__name__)
@@ -39,7 +42,7 @@ sockets = Sockets(app)
 @app.route("/api/blockchain",  methods=['GET'])
 def get_newest_version_of_blockchain():
     print("Called")
-    chain = read_from_pickle("resources/chain.pkl")
+    chain = read_from_json("resources/{}".format(CHAIN_DIR))
     return json.dumps(chain)
 
 
@@ -53,8 +56,8 @@ def verify_and_append_new_block():
     if (type(data)) != dict:
         abort(400, "Data is not in list format")
 
-    state = read_from_pickle("resources/latestState.pkl")
-    chain = read_from_pickle("resources/chain.pkl")
+    state = read_from_json("resources/{}".format(LATEST_STATE_DIR))
+    chain = read_from_json("resources/{}".format(CHAIN_DIR))
 
     parent_block = chain[-1]
 
@@ -65,7 +68,7 @@ def verify_and_append_new_block():
     chain.append(data)
 
     # TODO: SAVE BLOCK and Broadcast
-    # save_to_pickle("resources/chain.pkl", chain)    
+    # save_to_json("resources/{}".format(CHAIN_DIR), chain)    
 
     return json.dumps(chain)
 

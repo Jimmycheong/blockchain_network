@@ -24,16 +24,18 @@ from functions import (
 
 from constants import MINIMUM_NUMBER_OF_TRANSACTIONS
 
+
+from config import CHAIN_DIR,EXISTING_TXN_DIR
+
 from validity_functions import checkChain
 from node_functions import (
     submit_new_block_to_blockchain,
     clear_existing_transactions_file
 )
 
-
 def main():
     
-    file_path = "resources/existingTransactions.json"
+    file_path = "resources/{}".format(EXISTING_TXN_DIR)
 
     if not os.path.exists(file_path):
         raise FileNotFoundError("Cannot locate {}".format(file_path))
@@ -45,7 +47,7 @@ def main():
         raise TypeError("expected list, not type{}".format(type(existing_transactions)))
 
     # Validation Check 
-    chain = read_from_pickle("resources/chain.pkl")
+    chain = read_from_pickle("resources/{}".format(CHAIN_DIR))
     state = checkChain(chain)
 
     # # Ensure there are a minimum number of transactions to create a block

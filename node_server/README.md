@@ -14,7 +14,6 @@ Run the server with the addition of a specified port:
 `flask run --port 7000`
 
 
-
 Once a node has recorded sufficient number of transactions, the transactions can be submitted
 to the broadcasting server to create a new block to be appended onto the global blockchain
 

@@ -5,6 +5,7 @@ import os
 import json 
 import requests
 
+from constants import CHAIN_DIR, EXISTING_TXN_DIR
 from functions.general_functions import make_block
 
 def update_state_with_existing_transactions(state, txns):
@@ -30,7 +31,7 @@ def update_state_with_existing_transactions(state, txns):
 
     return state
 
-def clear_existing_transactions_file(file_path='resources/existingTransactions.json'):
+def clear_existing_transactions_file(file_path='resources/{}'.format(EXISTING_TXN_DIR)):
     '''
     Cleans the existing transactions file by replace it with an array
     
@@ -45,7 +46,7 @@ def clear_existing_transactions_file(file_path='resources/existingTransactions.j
         json.dump(existing_transactions, file)
 
 
-def update_existing_transactions_file(existing_transactions, file_path='resources/existingTransactions.json'):
+def update_existing_transactions_file(existing_transactions, file_path='resources/{}'.format(EXISTING_TXN_DIR)):
 
     '''
     Updates the JSON file containing all existing transaction.
@@ -63,7 +64,7 @@ def update_existing_transactions_file(existing_transactions, file_path='resource
         json.dump(existing_transactions, file)
 
 
-def get_existing_transactions(file_path="resources/existingTransactions.json"):
+def get_existing_transactions(file_path="resources/{}".format(EXISTING_TXN_DIR)):
 
     '''
     Reads from the node server's local resource folder the grab all existing transactions found

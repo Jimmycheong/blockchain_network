@@ -12,12 +12,14 @@ from functions.validity_functions import checkChain
 from functions.general_functions import read_from_pickle
 from pprint import pprint
 
+from constants import CHAIN_DIR
+
 def main():
 
-    if not os.path.exists("resources/chain.pkl"):
-        raise Exception("'resources/chain.pkl' does not exist") 
+    if not os.path.exists("resources/{}".format(CHAIN_DIR)):
+        raise FileNotFoundError("'resources/{}' does not exist".format(CHAIN_DIR)) 
 
-    chain = read_from_pickle("resources/chain.pkl")
+    chain = read_from_pickle("resources/{}".format(CHAIN_DIR))
     state = checkChain(chain)
 
     if not state: 
