@@ -18,7 +18,7 @@ A project to build a blockchain technology that uses transactions of virtual cur
 - Allows new users to generate a public address and private key
 - Allows users to create new transactions to other users.
 
-## How to setup project
+## How to setup the project
 
 Install all dependancies on each module using the pip command line tool: 
 
